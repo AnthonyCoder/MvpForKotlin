@@ -1,0 +1,1 @@
+include ':app', ':common', ':module_gank', ':module_home', ':module_project', ':module_video'
