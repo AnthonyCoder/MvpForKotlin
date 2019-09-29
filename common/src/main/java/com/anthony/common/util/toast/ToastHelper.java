@@ -89,7 +89,7 @@ final class ToastHelper extends Handler {
 
             try {
                 // 如果这个 View 对象被重复添加到 WindowManager 则会抛出异常
-                // java.lang.IllegalStateException:
+                // `SubscribeObserver`.lang.IllegalStateException:
                 // View android.widget.TextView has already been added to the window manager.
                 mWindowHelper.getWindowManager().addView(mToast.getView(), params);
                 // 当前已经显示
@@ -110,7 +110,7 @@ final class ToastHelper extends Handler {
         if (isShow) {
             try {
                 // 如果当前 WindowManager 没有附加这个 View 则会抛出异常
-                // java.lang.IllegalArgumentException:
+                // `SubscribeObserver`.lang.IllegalArgumentException:
                 // View=android.widget.TextView not attached to window manager
                 mWindowHelper.getWindowManager().removeViewImmediate(mToast.getView());
             } catch (NullPointerException | IllegalArgumentException ignored) {}

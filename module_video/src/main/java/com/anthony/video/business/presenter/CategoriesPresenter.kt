@@ -16,8 +16,9 @@ import com.anthony.video.business.contact.CategoriesContact
 class CategoriesPresenter(view: CategoriesContact.View) : BasePresenter<CategoriesContact.View>(view),
     CategoriesContact.Presenter {
     override fun getCategories() {
-        BaobabRequestClient.client.executeRequest(RequestAction.FormGetAction(),UrlConstant.GET_CATEGORIES,object : AppObserver<List<GetCategoriesResult>>() {
+        BaobabRequestClient.client.executeRequest(RequestAction.FormGetAction(),UrlConstant.GET_CATEGORIES,object : AppObserver<List<GetCategoriesResult>>(view= view) {
             override fun onNext(getCategoriesResults: List<GetCategoriesResult>) {
+                super.onNext(getCategoriesResults)
                 view.setCategories(getCategoriesResults)
             }
         })

@@ -11,18 +11,18 @@ import com.anthony.common.widgets.webview.X5WebView
  * 功能描述：
  */
 abstract class BaseWebActivity<P : BasePresenter<*>> : BaseActivity<P>() {
-    protected abstract val loadUrl: String?
-    protected abstract val x5WebView: X5WebView?
+    protected abstract fun getLoadUrl(): String?
+    protected abstract fun getX5WebView(): X5WebView?
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFormat(PixelFormat.TRANSLUCENT)
-        if (loadUrl != null && x5WebView != null) {
-            x5WebView!!.loadUrl(loadUrl)
+        if (getLoadUrl() != null && getX5WebView() != null) {
+            getX5WebView()!!.loadUrl(getLoadUrl())
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        x5WebView?.destroy()
+        getX5WebView()?.destroy()
     }
 }

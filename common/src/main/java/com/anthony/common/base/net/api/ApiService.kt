@@ -22,7 +22,7 @@ interface ApiService {
     @GET("{url}")
     fun executeGet(
         @Path(value = "url", encoded = true) url: String,
-        @Body requestBody: RequestBody
+        @Body requestBody: RequestBody?
     ): Observable<ResponseBody>
 
     @GET("{url}")
@@ -47,7 +47,7 @@ interface ApiService {
         @Path(
             value = "url",
             encoded = true
-        ) url: String, @Body requestBody: RequestBody
+        ) url: String, @Body requestBody: RequestBody?
     ): Observable<ResponseBody>
 
     @GET("{url}")
@@ -61,7 +61,7 @@ interface ApiService {
     fun executeGetWithHeader(
         @HeaderMap headers: Map<String, String>,
         @Path(value = "url", encoded = true) url: String,
-        @Body requestBody: RequestBody
+        @Body requestBody: RequestBody?
     ): Observable<ResponseBody>
 
     @GET("{url}")
@@ -82,7 +82,7 @@ interface ApiService {
     fun executePostWithHeader(
         @HeaderMap headers: Map<String, String>,
         @Path(value = "url", encoded = true) url: String,
-        @Body requestBody: RequestBody
+        @Body requestBody: RequestBody?
     ): Observable<ResponseBody>
 
 

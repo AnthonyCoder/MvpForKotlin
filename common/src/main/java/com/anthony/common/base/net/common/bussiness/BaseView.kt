@@ -15,5 +15,5 @@ interface BaseView {
     fun onLoadIng(tip: String)
     fun loadCompleted()
     fun loadError(errorMsg: Any)
-    fun <T> bindLifecycle(): AutoDisposeConverter<T>
+    fun <T> bindLifecycle(): AutoDisposeConverter<T>?
 }

@@ -21,8 +21,9 @@ class HomePresenter(view: HomeContact.View) : BasePresenter<HomeContact.View>(vi
         WanAndroidRequestClient.client.executeRequest(
             RequestAction.FormGetAction(),
             UrlConstant.GET_BANNER_JSON,
-            object : AppObserver<BannerResult>() {
+            object : AppObserver<BannerResult>(view = view,loadTips = "获取Banner信息中...",needBindLifeCycle = false) {
                 override fun onNext(bannerResults: BannerResult) {
+                    super.onNext(bannerResults)
                     bannerResults.data?.let {
                         view.onBanner(it)
                     }
@@ -36,6 +37,7 @@ class HomePresenter(view: HomeContact.View) : BasePresenter<HomeContact.View>(vi
             UrlConstant.GET_WXARTICLE_CHAPTERS_JSON,
             object : AppObserver<WeChatAuthorResult>() {
                 override fun onNext(weChatAuthorResult: WeChatAuthorResult) {
+                    super.onNext(weChatAuthorResult)
                     weChatAuthorResult.data?.let {
                         view.onWeChatAuthors(it)
                     }
@@ -47,8 +49,9 @@ class HomePresenter(view: HomeContact.View) : BasePresenter<HomeContact.View>(vi
         WanAndroidRequestClient.client.executeRequest(
             RequestAction.FormGetAction(),
             formatUrl(UrlConstant.GET_ARTICLE_LIST_JSON, "$page"),
-            object : AppObserver<HomeArticleResult>() {
+            object : AppObserver<HomeArticleResult>(view = view,needBindLifeCycle = true) {
                 override fun onNext(homeArticleResult: HomeArticleResult) {
+                    super.onNext(homeArticleResult)
                     view.onHomeArticles(homeArticleResult)
                 }
             })

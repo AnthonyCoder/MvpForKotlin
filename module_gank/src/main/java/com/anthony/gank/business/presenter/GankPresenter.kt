@@ -22,6 +22,7 @@ class GankPresenter(view: GankContact.View) : BasePresenter<GankContact.View>(vi
             formatUrl(UrlConstant.GET_IMAGE_LIST, "16", "$page"),
             object : AppObserver<GankImageResult>() {
                 override fun onNext(gankImageResult: GankImageResult) {
+                    super.onNext(gankImageResult)
                     if (gankImageResult.results != null) {
                         if (gankImageResult.results!!.isNotEmpty()) {
                             for (bean in gankImageResult.results!!) {

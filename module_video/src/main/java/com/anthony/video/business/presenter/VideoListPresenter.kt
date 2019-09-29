@@ -24,6 +24,7 @@ class VideoListPresenter(view: VideoListContact.View) : BasePresenter<VideoListC
         params["udid"] = "d2807c895f0348a180148c9dfa6f2feeac0781b5"
         BaobabRequestClient.client.executeRequest(RequestAction.FormPostAction(params),UrlConstant.POST_CATEGORIES_VIDEO_LIST,object : AppObserver<VideoListResult>() {
             override fun onNext(videoListResult: VideoListResult) {
+                super.onNext(videoListResult)
                 videoListResult.itemList?.let {
                     view.setVideoList(it)
                 }

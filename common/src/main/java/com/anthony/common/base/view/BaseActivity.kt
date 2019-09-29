@@ -75,6 +75,10 @@ abstract open class BaseActivity<P : BasePresenter<*>> : AppCompatActivity(), Ba
     }
 
     override fun loadError(errorMsg: Any) {
+        loadingDialog?.let {
+            it.dismiss()
+            loadingDialog = null
+        }
         ToastUtils.show("请求出错")
     }
 

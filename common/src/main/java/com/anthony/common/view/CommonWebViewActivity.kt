@@ -27,12 +27,11 @@ class CommonWebViewActivity : BaseWebActivity<BasePresenter<BaseView>>() {
     @Autowired(name = "webTitle",required = false)
     var webTitle:String? = null
 
+    override fun getLoadUrl(): String? = url
 
-    override val loadUrl: String? = url
-    override val x5WebView: X5WebView? = xv_web
+    override fun getX5WebView(): X5WebView = xv_web
 
-    override
-    fun getLayoutId(): Int  = R.layout.activity_common_webpage
+    override fun getLayoutId(): Int = R.layout.activity_common_webpage
 
     override fun initView() {
         iv_back.setOnClickListener {
@@ -47,6 +46,6 @@ class CommonWebViewActivity : BaseWebActivity<BasePresenter<BaseView>>() {
         }
     }
 
-    override fun getmPresenter(): BasePresenter<BaseView> = BasePresenter(this)
+    override fun getmPresenter():BasePresenter<BaseView> = BasePresenter(this)
 
 }

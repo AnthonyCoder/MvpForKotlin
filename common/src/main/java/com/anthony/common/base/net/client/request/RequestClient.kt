@@ -3,6 +3,7 @@ package com.anthony.common.base.net.client.request
 import com.anthony.common.base.net.client.base.BaseNetClient
 import com.anthony.common.base.net.client.base.RequestAction
 import com.anthony.common.base.net.common.observer.AppObserver
+import com.anthony.common.base.net.common.observer.SubscribeObserver.SubscribeObserver
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,30 +17,12 @@ import okhttp3.ResponseBody
  * 功能描述：
  */
 abstract class RequestClient : BaseNetClient() {
-    fun <T> executeRequest(action: RequestAction, url: String, observer: AppObserver<T>): Observable<ResponseBody>? {
+    fun <T> executeRequest(
+        action: RequestAction,
+        url: String,
+        observer: AppObserver<T>
+    ): Observable<ResponseBody>? {
         var requestObservable: Observable<ResponseBody>? = null
-        var responseBodyObserver: Observer<ResponseBody> = object : Observer<ResponseBody> {
-            override fun onComplete() {
-                observer.onComplete()
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                observer.onSubscribe(d)
-            }
-
-            override fun onNext(responseBody: ResponseBody) {
-                try {
-                    val json = responseBody.string()
-                    observer.onNext(observer.getEntityData(json))
-                } catch (e: Exception) {
-                    observer.onError(e)
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                observer.onError(e)
-            }
-        }
         when (action) {
             is RequestAction.FormGetAction -> {
                 requestObservable = if (action.params == null) {
@@ -106,8 +89,19 @@ abstract class RequestClient : BaseNetClient() {
                 }
             }
         }
-        requestObservable?.subscribeOn(Schedulers.io())?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe(responseBodyObserver)
+        if (observer.getAutoDisposeConverter<ResponseBody>() != null) {
+            requestObservable
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.`as`(observer.getAutoDisposeConverter<ResponseBody>()!!)
+                ?.subscribe(SubscribeObserver(observer))
+        } else {
+            requestObservable
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe(SubscribeObserver(observer))
+        }
+
         return requestObservable
     }
 }

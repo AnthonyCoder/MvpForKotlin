@@ -56,11 +56,14 @@ abstract class BaseNetClient {
         apiService = mRetrofit.create(ApiService::class.java)
     }
 
-    fun getRequestBodyFromObject(requestData : Any): RequestBody {
-        return RequestBody.create(
-            "application/json; charset=utf-8".toMediaTypeOrNull(),
-            mGson.toJson(requestData)
-        )
+    fun getRequestBodyFromObject(requestData : Any?): RequestBody? {
+        requestData?.let {
+            return RequestBody.create(
+                "application/json; charset=utf-8".toMediaTypeOrNull(),
+                mGson.toJson(it)
+            )
+        }
+        return null
     }
 
 }

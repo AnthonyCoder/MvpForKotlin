@@ -52,6 +52,10 @@ abstract class BaseFragment<P : BasePresenter<*>> : Fragment(), BaseView {
 
     override fun onError(errorMsg: String) {
         ToastUtils.show(errorMsg)
+        loadingDialog?.let {
+            it.dismiss()
+            loadingDialog = null
+        }
     }
 
     override fun onLoadIng(tip: String) {

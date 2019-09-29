@@ -22,6 +22,7 @@ class WeChatArticleListPresenter(view: WeChatArticleListContact.View) :
             formatUrl(UrlConstant.GET_WXARTICLE_LIST_JSON, "$id", "$page"),
             object : AppObserver<WxArticleListResult>() {
                 override fun onNext(wxArticleListResult: WxArticleListResult) {
+                    super.onNext(wxArticleListResult)
                     wxArticleListResult.data?.let {
                         view.onWeChatArticleList(it.datas)
                     }
