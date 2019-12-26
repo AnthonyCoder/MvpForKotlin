@@ -1,6 +1,5 @@
-package com.anthony.common.base.net.common.observer.SubscribeObserver
+package com.anthony.common.base.net.common.observer
 
-import com.anthony.common.base.net.common.observer.AppObserver
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import okhttp3.ResponseBody
@@ -11,7 +10,7 @@ import okhttp3.ResponseBody
  * 功能描述：
  */
 class SubscribeObserver<T> : Observer<ResponseBody> {
-    private lateinit var appObserver: AppObserver<T>
+    private var appObserver: AppObserver<T>
     constructor(appObserver: AppObserver<T>){
         this.appObserver = appObserver
     }
@@ -26,7 +25,13 @@ class SubscribeObserver<T> : Observer<ResponseBody> {
     override fun onNext(responseBody: ResponseBody) {
         try {
             val json = responseBody.string()
-            appObserver.onNext(appObserver.getEntityData(json))
+            val bean =  appObserver.getEntityData(json)
+            bean ?.let { bean ->
+                appObserver.onNext(bean)
+            }
+            if(bean == null){
+                appObserver.onError(Throwable("Response should not be null"))
+            }
         } catch (e: Exception) {
             appObserver.onError(e)
         }

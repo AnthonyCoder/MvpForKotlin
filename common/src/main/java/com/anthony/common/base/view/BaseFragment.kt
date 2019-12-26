@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.launcher.ARouter
 import com.anthony.common.base.net.common.bussiness.BasePresenter
 import com.anthony.common.base.net.common.bussiness.BaseView
+import com.anthony.common.base.net.common.exception.ApiException
 import com.anthony.common.util.rxlife.RxLifecycleUtils
 import com.anthony.common.util.toast.ToastUtils
 import com.anthony.common.widgets.loading.dialog.LoadingDialog
@@ -50,14 +51,6 @@ abstract class BaseFragment<P : BasePresenter<*>> : Fragment(), BaseView {
         ToastUtils.show(msg)
     }
 
-    override fun onError(errorMsg: String) {
-        ToastUtils.show(errorMsg)
-        loadingDialog?.let {
-            it.dismiss()
-            loadingDialog = null
-        }
-    }
-
     override fun onLoadIng(tip: String) {
         loadingDialog = loadingDialog?.let {
             mActivity?.let { it1 -> LoadingDialog(it1) }
@@ -85,8 +78,12 @@ abstract class BaseFragment<P : BasePresenter<*>> : Fragment(), BaseView {
         }
     }
 
-    override fun loadError(errorMsg: Any) {
-        ToastUtils.show("请求出错")
+    override fun loadError(exception: ApiException) {
+        ToastUtils.show(exception.displayMessage)
+        loadingDialog?.let {
+            it.dismiss()
+            loadingDialog = null
+        }
     }
 
     override fun getContext(): Context = mActivity!!

@@ -3,11 +3,9 @@ package com.anthony.common.base.net.client.request
 import com.anthony.common.base.net.client.base.BaseNetClient
 import com.anthony.common.base.net.client.base.RequestAction
 import com.anthony.common.base.net.common.observer.AppObserver
-import com.anthony.common.base.net.common.observer.SubscribeObserver.SubscribeObserver
+import com.anthony.common.base.net.common.observer.SubscribeObserver
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 
@@ -90,18 +88,19 @@ abstract class RequestClient : BaseNetClient() {
             }
         }
         if (observer.getAutoDisposeConverter<ResponseBody>() != null) {
-            requestObservable
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.`as`(observer.getAutoDisposeConverter<ResponseBody>()!!)
-                ?.subscribe(SubscribeObserver(observer))
+            observer.getAutoDisposeConverter<ResponseBody>()?.let { converter ->
+                requestObservable
+                    ?.subscribeOn(Schedulers.io())
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.`as`(converter)
+                    ?.subscribe(SubscribeObserver(observer))
+            }
         } else {
             requestObservable
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe(SubscribeObserver(observer))
         }
-
         return requestObservable
     }
 }

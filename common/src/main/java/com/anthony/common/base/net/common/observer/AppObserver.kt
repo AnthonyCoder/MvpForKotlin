@@ -51,7 +51,7 @@ abstract class AppObserver<T> : BaseObserver<T> {
             }
         }
     }
-
+    //这里可以对业务码做统一的一层过滤处理，而且这里可以持有view层实例，支持某一业务码触发view层更新
     override fun onNext(t: T) {
         if(t is BaseResponseModel){
             if(t.errorCode == 300){
@@ -65,11 +65,11 @@ abstract class AppObserver<T> : BaseObserver<T> {
     }
     //获取绑定view层生命周期的 AutoDisposeConverter 实例
     fun <R> getAutoDisposeConverter(): AutoDisposeConverter<R>? {
-        return if (view != null && needBindLifeCycle) {
-            view!!.bindLifecycle()
+        return if (needBindLifeCycle) {
+            view?.bindLifecycle()
         } else null
     }
-    fun getEntityData(json: String): T {//这里是处理Json转换成实例对象或者集合的方法
+    fun getEntityData(json: String): T? {//这里是处理Json转换成实例对象或者集合的方法
         val gson = Gson()
         var entityData: T? = null
         val parameterizedType = javaClass.genericSuperclass as ParameterizedType

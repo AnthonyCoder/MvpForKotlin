@@ -1,6 +1,5 @@
 package com.anthony.common.base
 
-import android.app.Application
 import android.util.Log
 import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter

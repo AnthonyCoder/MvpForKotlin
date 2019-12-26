@@ -5,6 +5,7 @@ import org.json.JSONException
 import retrofit2.HttpException
 
 import java.net.ConnectException
+import java.net.UnknownHostException
 import java.text.ParseException
 
 /**
@@ -13,19 +14,18 @@ import java.text.ParseException
  * 功能描述：
  */
 object ExceptionEngine {
-
     //对应HTTP的状态码
-    private val UNAUTHORIZED = 401
-    private val FORBIDDEN = 403
-    private val NOT_FOUND = 404
-    private val REQUEST_TIMEOUT = 408
-    private val INTERNAL_SERVER_ERROR = 500
-    private val BAD_GATEWAY = 502
-    private val SERVICE_UNAVAILABLE = 503
-    private val GATEWAY_TIMEOUT = 504
+    private const val UNAUTHORIZED = 401
+    private const val FORBIDDEN = 403
+    private const val NOT_FOUND = 404
+    private const val REQUEST_TIMEOUT = 408
+    private const val INTERNAL_SERVER_ERROR = 500
+    private const val BAD_GATEWAY = 502
+    private const val SERVICE_UNAVAILABLE = 503
+    private const val GATEWAY_TIMEOUT = 504
 
     fun handleException(e: Throwable): ApiException {
-        val ex: ApiException
+         val ex: ApiException
         if (e is HttpException) {             //HTTP错误
             ex = ApiException(e, ERROR.HTTP_ERROR)
             when (e.code()) {
@@ -45,7 +45,7 @@ object ExceptionEngine {
             ex = ApiException(e, ERROR.PARSE_ERROR)
             ex.displayMessage = "解析错误"            //均视为解析错误
             return ex
-        } else if (e is ConnectException) {
+        } else if (e is ConnectException||e is UnknownHostException) {
             ex = ApiException(e, ERROR.NETWORD_ERROR)
             ex.displayMessage = "连接失败"  //均视为网络错误
             return ex

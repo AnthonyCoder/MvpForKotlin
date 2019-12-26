@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.launcher.ARouter
 import com.anthony.common.base.net.common.bussiness.BasePresenter
 import com.anthony.common.base.net.common.bussiness.BaseView
+import com.anthony.common.base.net.common.exception.ApiException
 import com.anthony.common.util.StatusBarUtil
 import com.anthony.common.util.rxlife.RxLifecycleUtils
 import com.anthony.common.util.toast.ToastUtils
@@ -50,9 +51,6 @@ abstract open class BaseActivity<P : BasePresenter<*>> : AppCompatActivity(), Ba
         ToastUtils.show(msg)
     }
 
-    override fun onError(errorMsg: String) {
-        ToastUtils.show(errorMsg)
-    }
 
     override fun onLoadIng(tip: String) {
         loadingDialog = loadingDialog?.let {
@@ -74,7 +72,7 @@ abstract open class BaseActivity<P : BasePresenter<*>> : AppCompatActivity(), Ba
 
     }
 
-    override fun loadError(errorMsg: Any) {
+    override fun loadError(exception: ApiException) {
         loadingDialog?.let {
             it.dismiss()
             loadingDialog = null

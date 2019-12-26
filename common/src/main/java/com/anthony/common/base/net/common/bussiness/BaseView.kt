@@ -1,6 +1,7 @@
 package com.anthony.common.base.net.common.bussiness
 
 import android.content.Context
+import com.anthony.common.base.net.common.exception.ApiException
 import com.uber.autodispose.AutoDisposeConverter
 
 /**
@@ -11,9 +12,8 @@ import com.uber.autodispose.AutoDisposeConverter
 interface BaseView {
     fun getContext(): Context
     fun showToast(msg: String)
-    fun onError(errorMsg: String)
     fun onLoadIng(tip: String)
     fun loadCompleted()
-    fun loadError(errorMsg: Any)
+    fun loadError(exception: ApiException)
     fun <T> bindLifecycle(): AutoDisposeConverter<T>?
 }
